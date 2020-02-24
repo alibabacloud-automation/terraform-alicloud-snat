@@ -1,26 +1,23 @@
-Terraform Module for creating several SNAT entries for Nat Gateway on  Alibaba Cloud.    
 terraform-alicloud-snat
-===========================
+=======================
 
-English | [简体中文](README-CN.md)
+本 Module 用于在阿里云的 Nat 网关下批量添加[Snat条目](https://www.alibabacloud.com/help/zh/doc-detail/65183.htm)。
+SNAT功能可以为专有网络中无公网IP的ECS实例提供访问互联网的代理服务。
 
-Terraform module used to create several [SNAT entries](https://www.alibabacloud.com/help/doc-detail/65183.htm) for an existing Nat Gateway on Alibaba Cloud. 
-The SNAT function allows ECS instances that are not associated with a public IP address in a VPC to access the Internet.
-
-These types of resources are supported:
+本 Module 支持创建以下资源:
 
 * [snat_entry](https://www.terraform.io/docs/providers/alicloud/r/snat.html)
 
-## Terraform versions
+## Terraform 版本
 
-For Terraform 0.12 and Alicloud Provider 1.71.1+.
+如果您正在使用 Terraform 0.12，Provider的版本 1.71.1+。
 
-## Usage
+## 用法
 
-Specify the existing cidr block, vswitch ids and ecs instance ids
+指定已知的 cidr block, vswitch ids 和 ecs instance ids
 
 ```hcl
-// Fetch the existing resources
+// 使用datasource获取存量的资源
 data "alicloud_vpcs" "default" {
   is_default = true
 }
@@ -33,7 +30,7 @@ data "alicloud_instances" "default" {
   vpc_id = data.alicloud_vpcs.default.ids.0
 }
 
-// create a new nat gateway
+// 创建一个新的网关
 module "nat" {
   source = "terraform-alicloud-modules/nat-gateway/alicloud"
   region = var.region
@@ -83,21 +80,21 @@ module "complete" {
 }
 ```
 
-Support to set the computed resources
+支持设置待创建的资源
 ```hcl
-// Create vpc and vswitches
+// 创建vpc和vswitch
 module "vpc" {
   source = "alibaba/vpc/alicloud"
   region = var.region
   # ... omitted
 }
-// Create ecs instance
+// 创建ecs 实例
 module "ecs-instance" {
   source = "alibaba/ecs-instance/alicloud"
   region = var.region
   # ... omitted
 }
-// Create a new nat gateway
+// 创建一个新的nat 网关
 module "nat" {
   source = "terraform-alicloud-modules/nat-gateway/alicloud"
   region = var.region
@@ -149,26 +146,24 @@ module "computed" {
 }
 ```
 
-## Examples
+## 示例
 
-* [Complete example](https://github.com/terraform-alicloud-modules/terraform-alicloud-snat/tree/master/examples/complete) shows all available parameters to configure snat entry.
-* [Computed example](https://github.com/terraform-alicloud-modules/terraform-alicloud-snat/tree/master/examples/computed) shows how to specify computed values inside snat entry. (solution for `value of 'count' cannot be computed` problem).
+* [完整使用示例](https://github.com/terraform-alicloud-modules/terraform-alicloud-security-group/tree/master/examples/complete) 展示所有可配置的参数。
+* [待创建资源的示例](https://github.com/terraform-alicloud-modules/terraform-alicloud-security-group/tree/master/examples/computed) 展示配置哪些待创建资源的参数，用于解决`value of 'count' cannot be computed`的问题。
 
-Submit Issues
--------------
+提交问题
+-------
+如果在使用该 Terraform Module 的过程中有任何问题，可以直接创建一个 [Provider Issue](https://github.com/terraform-providers/terraform-provider-alicloud/issues/new)，我们将根据问题描述提供解决方案。
 
-If you have any problems when using this module, please opening a [provider issue](https://github.com/terraform-providers/terraform-provider-alicloud/issues/new) and let us know.
+**注意:** 不建议在该 Module 仓库中直接提交 Issue。
 
-**Note:** There does not recommend to open an issue on this repo.
-
-Authors
+作者
 -------
 Created and maintained by He Guimin(@xiaozhu36 heguimin36@163.com)
 
-Reference
+参考
 ---------
 * [Terraform-Provider-Alicloud Github](https://github.com/terraform-providers/terraform-provider-alicloud)
 * [Terraform-Provider-Alicloud Release](https://releases.hashicorp.com/terraform-provider-alicloud/)
 * [Terraform-Provider-Alicloud Docs](https://www.terraform.io/docs/providers/alicloud/index.html)
-
 
