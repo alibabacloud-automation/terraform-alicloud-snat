@@ -1,10 +1,8 @@
-# Computed Security Group example
+# Computed Snat Entry example
 
-Configuration in this directory creates set of Security Group and Security Group Rules resources in various combination.
+Configuration in this directory creates set of Snat entries resources in various combination.
 
 Data sources are used to discover existing VPC resources (VPC and default security group).
-
-This example aims to show rules' `source_security_group_id` can come from another security group module or resource.
 
 ## Usage
 
