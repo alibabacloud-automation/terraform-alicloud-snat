@@ -148,8 +148,8 @@ module "computed" {
 
 ## 示例
 
-* [完整使用示例](https://github.com/terraform-alicloud-modules/terraform-alicloud-security-group/tree/master/examples/complete) 展示所有可配置的参数。
-* [待创建资源的示例](https://github.com/terraform-alicloud-modules/terraform-alicloud-security-group/tree/master/examples/computed) 展示配置哪些待创建资源的参数，用于解决`value of 'count' cannot be computed`的问题。
+* [完整使用示例](https://github.com/terraform-alicloud-modules/terraform-alicloud-snat/tree/master/examples/complete) 展示所有可配置的参数。
+* [待创建资源的示例](https://github.com/terraform-alicloud-modules/terraform-alicloud-snat/tree/master/examples/computed) 展示配置哪些待创建资源的参数，用于解决`value of 'count' cannot be computed`的问题。
 
 提交问题
 -------
