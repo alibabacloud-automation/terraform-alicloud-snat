@@ -2,7 +2,7 @@ Terraform Module for creating several SNAT entries for Nat Gateway on  Alibaba C
 terraform-alicloud-snat
 ===========================
 
-English | [简体中文](README-CN.md)
+English | [简体中文](https://github.com/terraform-alicloud-modules/terraform-alicloud-snat/blob/master/README-CN.md)
 
 Terraform module used to create several [SNAT entries](https://www.alibabacloud.com/help/doc-detail/65183.htm) for an existing Nat Gateway on Alibaba Cloud. 
 The SNAT function allows ECS instances that are not associated with a public IP address in a VPC to access the Internet.
