@@ -159,7 +159,7 @@ module "computed" {
 
 作者
 -------
-Created and maintained by He Guimin(@xiaozhu36 heguimin36@163.com)
+Created and maintained by Alibaba Cloud Terraform Team(terraform@alibabacloud.com)
 
 参考
 ---------
