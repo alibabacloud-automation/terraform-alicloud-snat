@@ -13,7 +13,10 @@ These types of resources are supported:
 
 ## Terraform versions
 
-For Terraform 0.12 and Alicloud Provider 1.71.1+.
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.12.0 |
+| <a name="requirement_alicloud"></a> [alicloud](#requirement\_alicloud) | >= 1.71.1|
 
 ## Usage
 
@@ -36,13 +39,11 @@ data "alicloud_instances" "default" {
 // create a new nat gateway
 module "nat" {
   source = "terraform-alicloud-modules/nat-gateway/alicloud"
-  region = var.region
   # ... omitted
 }
 
 module "complete" {
   source = "../../"
-  region = var.region
 
   create        = true
   snat_table_id = module.nat.this_snat_table_id
@@ -88,25 +89,21 @@ Support to set the computed resources
 // Create vpc and vswitches
 module "vpc" {
   source = "alibaba/vpc/alicloud"
-  region = var.region
   # ... omitted
 }
 // Create ecs instance
 module "ecs-instance" {
   source = "alibaba/ecs-instance/alicloud"
-  region = var.region
   # ... omitted
 }
 // Create a new nat gateway
 module "nat" {
   source = "terraform-alicloud-modules/nat-gateway/alicloud"
-  region = var.region
   # ... omitted
 }
 
 module "computed" {
   source = "terraform-alicloud-modules/snat/alicloud"
-  region = var.region
 
   create        = true
   snat_table_id = module.nat.this_snat_table_id
@@ -153,6 +150,70 @@ module "computed" {
 
 * [Complete example](https://github.com/terraform-alicloud-modules/terraform-alicloud-snat/tree/master/examples/complete) shows all available parameters to configure snat entry.
 * [Computed example](https://github.com/terraform-alicloud-modules/terraform-alicloud-snat/tree/master/examples/computed) shows how to specify computed values inside snat entry. (solution for `value of 'count' cannot be computed` problem).
+
+## Notes
+From the version v1.0.2, the module has removed the following `provider` setting:
+
+```hcl
+provider "alicloud" {
+  profile                 = var.profile != "" ? var.profile : null
+  shared_credentials_file = var.shared_credentials_file != "" ? var.shared_credentials_file : null
+  region                  = var.region != "" ? var.region : null
+  skip_region_validation  = var.skip_region_validation
+  configuration_source    = "terraform-alicloud-modules/snat"
+}
+```
+
+If you still want to use the `provider` setting to apply this module, you can specify a supported version, like 1.0.1:
+
+```hcl
+module "snat" {
+  source  = "terraform-alicloud-modules/snat/alicloud"
+  version     = "1.0.1"
+  region      = "cn-hangzhou"
+  profile     = "Your-Profile-Name"
+  create        = true
+  snat_table_id = module.nat.this_snat_table_id
+  snat_ips = module.nat.this_eip_ips
+}
+```
+
+If you want to upgrade the module to 1.0.2 or higher in-place, you can define a provider which same region with
+previous region:
+
+```hcl
+provider "alicloud" {
+   region  = "cn-hangzhou"
+   profile = "Your-Profile-Name"
+}
+module "snat" {
+  source  = "terraform-alicloud-modules/snat/alicloud"
+  create        = true
+  snat_table_id = module.nat.this_snat_table_id
+  snat_ips = module.nat.this_eip_ips
+}
+```
+or specify an alias provider with a defined region to the module using `providers`:
+
+```hcl
+provider "alicloud" {
+  region  = "cn-hangzhou"
+  profile = "Your-Profile-Name"
+  alias   = "hz"
+}
+module "snat" {
+  source  = "terraform-alicloud-modules/snat/alicloud"
+  providers = {
+    alicloud = alicloud.hz
+  }
+  create        = true
+  snat_table_id = module.nat.this_snat_table_id
+  snat_ips      = module.nat.this_eip_ips
+}
+```
+
+and then run `terraform init` and `terraform apply` to make the defined provider effect to the existing module state.
+More details see [How to use provider in the module](https://www.terraform.io/docs/language/modules/develop/providers.html#passing-providers-explicitly)
 
 Submit Issues
 -------------
