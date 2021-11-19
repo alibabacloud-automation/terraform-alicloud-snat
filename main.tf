@@ -1,11 +1,3 @@
-provider "alicloud" {
-  profile                 = var.profile != "" ? var.profile : null
-  shared_credentials_file = var.shared_credentials_file != "" ? var.shared_credentials_file : null
-  region                  = var.region != "" ? var.region : null
-  skip_region_validation  = var.skip_region_validation
-  configuration_source    = "terraform-alicloud-modules/snat"
-}
-
 locals {
   snat_table_id  = var.snat_table_id != "" ? var.snat_table_id : var.nat_gateway_id != "" ? concat(data.alicloud_nat_gateways.this.gateways.*.snat_table_id, [""])[0] : ""
   common_snat_ip = join(",", var.snat_ips)
