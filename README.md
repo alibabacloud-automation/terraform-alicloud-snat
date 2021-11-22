@@ -152,7 +152,7 @@ module "computed" {
 * [Computed example](https://github.com/terraform-alicloud-modules/terraform-alicloud-snat/tree/master/examples/computed) shows how to specify computed values inside snat entry. (solution for `value of 'count' cannot be computed` problem).
 
 ## Notes
-From the version v1.0.2, the module has removed the following `provider` setting:
+From the version v1.1.0, the module has removed the following `provider` setting:
 
 ```hcl
 provider "alicloud" {
@@ -178,7 +178,7 @@ module "snat" {
 }
 ```
 
-If you want to upgrade the module to 1.0.2 or higher in-place, you can define a provider which same region with
+If you want to upgrade the module to 1.1.0 or higher in-place, you can define a provider which same region with
 previous region:
 
 ```hcl

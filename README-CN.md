@@ -149,7 +149,7 @@ module "computed" {
 * [待创建资源的示例](https://github.com/terraform-alicloud-modules/terraform-alicloud-snat/tree/master/examples/computed) 展示配置哪些待创建资源的参数，用于解决`value of 'count' cannot be computed`的问题。
 
 ## 注意事项
-本Module从版本v1.0.2开始已经移除掉如下的 provider 的显示设置：
+本Module从版本v1.1.0开始已经移除掉如下的 provider 的显示设置：
 ```hcl
 provider "alicloud" {
   profile                 = var.profile != "" ? var.profile : null
@@ -174,7 +174,7 @@ module "snat" {
   snat_ips      = module.nat.this_eip_ips
 }
 ```
-如果你想对正在使用中的Module升级到 1.0.2 或者更高的版本，那么你可以在模板中显示定义一个相同Region的provider：
+如果你想对正在使用中的Module升级到 1.1.0 或者更高的版本，那么你可以在模板中显示定义一个相同Region的provider：
 ```hcl
 provider "alicloud" {
   region  = "cn-hangzhou"
