@@ -25,6 +25,7 @@ locals {
     ]
   )
 }
+
 resource "alicloud_snat_entry" "snat_with_source_cidrs" {
   count = var.create ? length(local.snat_with_source_cidrs) : 0
 
@@ -48,6 +49,7 @@ locals {
     ]
   )
 }
+
 resource "alicloud_snat_entry" "snat_with_vswitch_ids" {
   count = var.create ? length(local.snat_with_vswitch_ids) : 0
 
@@ -59,7 +61,6 @@ resource "alicloud_snat_entry" "snat_with_vswitch_ids" {
 
 # Snat entries with setting ecs "instance_ids"
 locals {
-
   ecs_instance_ids = distinct(flatten([
     for _, obj in var.snat_with_instance_ids : [
       split(",", lookup(obj, "instance_ids", ""))
@@ -121,4 +122,3 @@ resource "alicloud_snat_entry" "computed_snat_with_vswitch_ids" {
   source_vswitch_id = lookup(var.computed_snat_with_vswitch_id[count.index], "vswitch_id", )
   snat_ip           = lookup(var.computed_snat_with_vswitch_id[count.index], "snat_ip", local.common_snat_ip)
 }
-

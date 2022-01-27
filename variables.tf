@@ -12,6 +12,7 @@ variable "profile" {
   type        = string
   default     = ""
 }
+
 variable "shared_credentials_file" {
   description = "(Deprecated from version 1.1.0)This is the path to the shared credentials file. If this is not set and a profile is specified, $HOME/.aliyun/config.json will be used."
   type        = string
@@ -32,11 +33,13 @@ variable "create" {
   type        = bool
   default     = true
 }
+
 variable "nat_gateway_id" {
   description = "The id of a nat gateway used to fetch the 'snat_table_id'."
   type        = string
   default     = ""
 }
+
 variable "snat_table_id" {
   description = "The snat table id to use on all snat entries. If not set, it can be fetched by setting 'nat_gateway_id'."
   type        = string
@@ -84,4 +87,3 @@ variable "computed_snat_with_vswitch_id" {
   type        = list(map(string))
   default     = []
 }
-

@@ -12,7 +12,7 @@ SNAT功能可以为专有网络中无公网IP的ECS实例提供访问互联网�
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.12.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.0 |
 | <a name="requirement_alicloud"></a> [alicloud](#requirement\_alicloud) | >= 1.71.1 |
 
 ## 用法
@@ -149,7 +149,7 @@ module "computed" {
 * [待创建资源的示例](https://github.com/terraform-alicloud-modules/terraform-alicloud-snat/tree/master/examples/computed) 展示配置哪些待创建资源的参数，用于解决`value of 'count' cannot be computed`的问题。
 
 ## 注意事项
-本Module从版本v1.1.0开始已经移除掉如下的 provider 的显示设置：
+本Module从版本v1.1.0开始已经移除掉如下的 provider 的显式设置：
 ```hcl
 provider "alicloud" {
   profile                 = var.profile != "" ? var.profile : null
@@ -174,7 +174,7 @@ module "snat" {
   snat_ips      = module.nat.this_eip_ips
 }
 ```
-如果你想对正在使用中的Module升级到 1.1.0 或者更高的版本，那么你可以在模板中显示定义一个相同Region的provider：
+如果你想对正在使用中的Module升级到 1.1.0 或者更高的版本，那么你可以在模板中显式定义一个相同Region的provider：
 ```hcl
 provider "alicloud" {
   region  = "cn-hangzhou"
@@ -187,7 +187,7 @@ module "snat" {
   snat_ips      = module.nat.this_eip_ips
 }
 ```
-或者，如果你是多Region部署，你可以利用 `alias` 定义多个 provider，并在Module中显示指定这个provider：
+或者，如果你是多Region部署，你可以利用 `alias` 定义多个 provider，并在Module中显式指定这个provider：
 
 ```hcl
 provider "alicloud" {
@@ -225,4 +225,3 @@ Created and maintained by Alibaba Cloud Terraform Team(terraform@alibabacloud.co
 * [Terraform-Provider-Alicloud Github](https://github.com/terraform-providers/terraform-provider-alicloud)
 * [Terraform-Provider-Alicloud Release](https://releases.hashicorp.com/terraform-provider-alicloud/)
 * [Terraform-Provider-Alicloud Docs](https://www.terraform.io/docs/providers/alicloud/index.html)
-
