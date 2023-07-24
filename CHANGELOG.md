@@ -1,4 +1,10 @@
-## 1.2.0 (Unreleased)
+## 1.3.0 (Unreleased)
+## 1.2.0 (July 24, 2023)
+
+IMPROVEMENTS:
+
+- Improves the module example [GH-6](https://github.com/terraform-alicloud-modules/terraform-alicloud-snat/pull/6)
+
 ## 1.1.0 (November 22, 2021)
 
 IMPROVEMENTS:
