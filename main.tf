@@ -27,7 +27,7 @@ locals {
 }
 
 resource "alicloud_snat_entry" "snat_with_source_cidrs" {
-  count = var.create ? length(local.snat_with_source_cidrs) : 0
+  count = var.create_snat_entry_count_with_source_cidrs
 
   snat_table_id   = local.snat_table_id
   snat_entry_name = lookup(local.snat_with_source_cidrs[count.index], "name", format("tf-with-cidr%3d", count.index + 1))
@@ -51,7 +51,7 @@ locals {
 }
 
 resource "alicloud_snat_entry" "snat_with_vswitch_ids" {
-  count = var.create ? length(local.snat_with_vswitch_ids) : 0
+  count = var.create_snat_entry_count_with_vswitch_ids
 
   snat_table_id     = local.snat_table_id
   snat_entry_name   = lookup(local.snat_with_vswitch_ids[count.index], "name", format("tf-with-id%3d", count.index + 1))
@@ -91,7 +91,7 @@ data "alicloud_instances" "this" {
 }
 
 resource "alicloud_snat_entry" "snat_with_instance_ids" {
-  count = var.create ? length(local.snat_with_instance_ids) : 0
+  count = var.create_snat_entry_count_with_instance_ids
 
   snat_table_id   = local.snat_table_id
   snat_entry_name = lookup(local.snat_with_instance_ids[count.index], "name", format("tf-with-instance-id%3d", count.index + 1))

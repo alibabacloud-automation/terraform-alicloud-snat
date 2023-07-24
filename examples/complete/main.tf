@@ -77,6 +77,7 @@ module "complete" {
   snat_ips       = module.eip.this_eip_address
 
   # Open to CIDRs blocks
+  create_snat_entry_count_with_source_cidrs = 1
   snat_with_source_cidrs = [
     {
       name         = var.name
@@ -86,6 +87,7 @@ module "complete" {
   ]
 
   # Open for vswitch ids
+  create_snat_entry_count_with_vswitch_ids = 1
   snat_with_vswitch_ids = [
     {
       name        = var.name
@@ -95,6 +97,7 @@ module "complete" {
   ]
 
   # Open for ecs instance ids
+  create_snat_entry_count_with_instance_ids = 1
   snat_with_instance_ids = [
     {
       name         = var.name
