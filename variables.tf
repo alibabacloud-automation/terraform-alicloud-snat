@@ -55,16 +55,34 @@ variable "snat_ips" {
 #################
 # Snat Entries
 #################
+variable "create_snat_entry_count_with_source_cidrs" {
+  description = "The number of snat entry to be create by source cidrs."
+  type        = number
+  default     = 0
+}
+
 variable "snat_with_source_cidrs" {
   description = "List of snat entries to create by cidr blocks. Each item valid keys: 'source_cidrs'(required, using comma joinor to set multi cidrs), 'snat_ip'(if not, use root parameter 'snat_ips', using comma joinor to set multi ips), 'name'(if not, will return one automatically)."
   type        = list(map(string))
   default     = []
 }
 
+variable "create_snat_entry_count_with_vswitch_ids" {
+  description = "The number of snat entry to be create by vswitch id."
+  type        = number
+  default     = 0
+}
+
 variable "snat_with_vswitch_ids" {
   description = "List of snat entries to create by vswitch ids. Each item valid keys: 'vswitch_ids'(required, using comma joinor to set multi vswitch ids), 'snat_ip'(if not, use root parameter 'snat_ips', using comma joinor to set multi ips), 'name'(if not, will return one automatically)."
   type        = list(map(string))
   default     = []
+}
+
+variable "create_snat_entry_count_with_instance_ids" {
+  description = "The number of snat entry to be create by instance id."
+  type        = number
+  default     = 0
 }
 
 variable "snat_with_instance_ids" {
