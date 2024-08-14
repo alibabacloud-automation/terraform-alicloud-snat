@@ -80,7 +80,7 @@ module "complete" {
   snat_with_source_cidrs = [
     {
       name         = var.name
-      source_cidrs = format("%s/32", module.ecs_instance.this_private_ip.0)
+      source_cidrs = [format("%s/32", module.ecs_instance.this_private_ip.0)]
       snat_ip      = module.eip.this_eip_address[0]
     }
   ]
@@ -89,7 +89,7 @@ module "complete" {
   snat_with_vswitch_ids = [
     {
       name        = var.name
-      vswitch_ids = join(",", [module.vpc.this_vswitch_ids[1]])
+      vswitch_ids = [module.vpc.this_vswitch_ids[1]]
       snat_ip     = module.eip.this_eip_address[1]
     }
   ]
@@ -98,26 +98,8 @@ module "complete" {
   snat_with_instance_ids = [
     {
       name         = var.name
-      instance_ids = join(",", [module.ecs_instance.this_instance_id[2]])
+      instance_ids = [module.ecs_instance.this_instance_id[2]]
       snat_ip      = module.eip.this_eip_address[2]
-    }
-  ]
-
-  # Open to computed CIDRs blocks
-  computed_snat_with_source_cidr = [
-    {
-      name        = var.name
-      source_cidr = format("%s/32", module.ecs_instance.this_private_ip.3)
-      snat_ip     = module.eip.this_eip_address[3]
-    }
-  ]
-
-  # Open for computed vswitch ids
-  computed_snat_with_vswitch_id = [
-    {
-      name       = var.name
-      vswitch_id = module.vpc.this_vswitch_ids[4]
-      snat_ip    = module.eip.this_eip_address[4]
     }
   ]
 
