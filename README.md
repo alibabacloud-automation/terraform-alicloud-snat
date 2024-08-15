@@ -25,7 +25,6 @@ Specify the existing cidr block, vswitch ids and ecs instance ids
 ```hcl
 // Fetch the existing resources
 data "alicloud_vpcs" "default" {
-  is_default = true
 }
 
 data "alicloud_vswitches" "default" {
@@ -43,7 +42,7 @@ module "nat" {
 }
 
 module "complete" {
-  source = "../../"
+  source  = "terraform-alicloud-modules/snat/alicloud"
 
   create        = true
   snat_table_id = module.nat.this_snat_table_id
@@ -55,12 +54,12 @@ module "complete" {
   snat_with_source_cidrs = [
     {
       name         = "source-cidrs-for"
-      source_cidrs = join(",", [cidrsubnet(data.alicloud_vswitches.default.vswitches.0.cidr_block, 8, 10), cidrsubnet(data.alicloud_vswitches.default.vswitches.0.cidr_block, 8, 11)])
+      source_cidrs = [cidrsubnet(data.alicloud_vswitches.default.vswitches.0.cidr_block, 8, 10), cidrsubnet(data.alicloud_vswitches.default.vswitches.0.cidr_block, 8, 11)]
       snat_ip      = module.nat.this_eip_ips[0]
     },
     {
       name         = "source-cidrs-bar"
-      source_cidrs = cidrsubnet(data.alicloud_vswitches.default.vswitches.0.cidr_block, 8, 12)
+      source_cidrs = [cidrsubnet(data.alicloud_vswitches.default.vswitches.0.cidr_block, 8, 12)]
       snat_ip      = module.nat.this_eip_ips[1]
     }
   ]
@@ -68,7 +67,7 @@ module "complete" {
   # Open for vswitch ids
   snat_with_vswitch_ids = [
     {
-      vswitch_ids = join(",", data.alicloud_vpcs.default.vpcs.0.vswitch_ids)
+      vswitch_ids = data.alicloud_vpcs.default.vpcs.0.vswitch_ids
       snat_ip     = module.nat.this_eip_ips[2]
     }
   ]
@@ -77,79 +76,17 @@ module "complete" {
   snat_with_instance_ids = [
     {
       name         = "form-ecs"
-      instance_ids = join(",", data.alicloud_instances.default.ids)
+      instance_ids = data.alicloud_instances.default.ids
       snat_ip      = module.nat.this_eip_ips[3]
     }
   ]
 }
 ```
 
-Support to set the computed resources
-```hcl
-// Create vpc and vswitches
-module "vpc" {
-  source = "alibaba/vpc/alicloud"
-  # ... omitted
-}
-// Create ecs instance
-module "ecs-instance" {
-  source = "alibaba/ecs-instance/alicloud"
-  # ... omitted
-}
-// Create a new nat gateway
-module "nat" {
-  source = "terraform-alicloud-modules/nat-gateway/alicloud"
-  # ... omitted
-}
-
-module "computed" {
-  source = "terraform-alicloud-modules/snat/alicloud"
-
-  create        = true
-  snat_table_id = module.nat.this_snat_table_id
-
-  # Default snat ip, which will be used for all snat entries.
-  snat_ips = module.nat.this_eip_ips
-
-  # Open to computed CIDRs blocks
-  computed_snat_with_source_cidr = [
-    {
-      name        = "vswitch-cidr"
-      source_cidr = module.vpc.this_vswitch_cidr_blocks.2
-      snat_ip     = module.nat.this_eip_ips[0]
-    },
-    {
-      name        = "ecs-cidr-foo"
-      source_cidr = format("%s/32", module.ecs-instance.this_private_ip.0)
-      snat_ip     = module.nat.this_eip_ips[1]
-    },
-    {
-      name        = "ecs-cidr-bar"
-      source_cidr = format("%s/32", module.ecs-instance.this_private_ip.1)
-      snat_ip     = module.nat.this_eip_ips[1]
-    }
-  ]
-
-  # Open for computed vswitch ids
-  computed_snat_with_vswitch_id = [
-    {
-      name       = "vswitch-id-foo"
-      vswitch_id = module.vpc.this_vswitch_ids[0]
-      snat_ip    = module.nat.this_eip_ips[2]
-    },
-    {
-      name       = "vswitch-id-bar"
-      vswitch_id = module.vpc.this_vswitch_ids[1]
-      snat_ip    = module.nat.this_eip_ips[2]
-    }
-  ]
-}
-```
 
 ## Examples
 
 * [Complete example](https://github.com/terraform-alicloud-modules/terraform-alicloud-snat/tree/master/examples/complete) shows all available parameters to configure snat entry.
-* [Computed example](https://github.com/terraform-alicloud-modules/terraform-alicloud-snat/tree/master/examples/computed) shows how to specify computed values inside snat entry. (solution for `value of 'count' cannot be computed` problem).
 
 ## Notes
 From the version v1.1.0, the module has removed the following `provider` setting:
