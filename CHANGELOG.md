@@ -1,4 +1,8 @@
-## 2.1.0 (Unreleased)
+## 2.2.0 (Unreleased)
+## 2.1.0 (August 15, 2024)
+
+- update readme.
+
 ## 2.0.0 (August 15, 2024)
 
 - Module:update variables, remove redundant resource; Example: improve the examples [GH-7](https://github.com/alibabacloud-automation/terraform-alicloud-snat/pull/7)
