@@ -1,6 +1,5 @@
 locals {
-  snat_table_id  = var.snat_table_id != "" ? var.snat_table_id : var.nat_gateway_id != "" ? concat(data.alicloud_nat_gateways.this.gateways.*.snat_table_id, [""])[0] : ""
-  common_snat_ip = join(",", var.snat_ips)
+  snat_table_id = var.snat_table_id != "" ? var.snat_table_id : var.nat_gateway_id != "" ? concat(data.alicloud_nat_gateways.this.gateways[*].snat_table_id, [""])[0] : ""
 }
 
 data "alicloud_nat_gateways" "this" {
@@ -31,8 +30,8 @@ resource "alicloud_snat_entry" "snat_with_source_cidrs" {
 
   snat_table_id   = local.snat_table_id
   snat_entry_name = lookup(local.snat_with_source_cidrs[count.index], "name", format("tf-with-cidr%3d", count.index + 1))
-  source_cidr     = lookup(local.snat_with_source_cidrs[count.index], "source_cidr", )
-  snat_ip         = lookup(local.snat_with_source_cidrs[count.index], "snat_ip", )
+  source_cidr     = local.snat_with_source_cidrs[count.index]["source_cidr"]
+  snat_ip         = local.snat_with_source_cidrs[count.index]["snat_ip"]
 }
 
 # Snat entries with setting "vswitch_ids"
@@ -55,8 +54,8 @@ resource "alicloud_snat_entry" "snat_with_vswitch_ids" {
 
   snat_table_id     = local.snat_table_id
   snat_entry_name   = lookup(local.snat_with_vswitch_ids[count.index], "name", format("tf-with-id%3d", count.index + 1))
-  source_vswitch_id = lookup(local.snat_with_vswitch_ids[count.index], "source_vswitch_id", )
-  snat_ip           = lookup(local.snat_with_vswitch_ids[count.index], "snat_ip", )
+  source_vswitch_id = local.snat_with_vswitch_ids[count.index]["source_vswitch_id"]
+  snat_ip           = local.snat_with_vswitch_ids[count.index]["snat_ip"]
 }
 
 # Snat entries with setting ecs "instance_ids"
@@ -95,6 +94,6 @@ resource "alicloud_snat_entry" "snat_with_instance_ids" {
 
   snat_table_id   = local.snat_table_id
   snat_entry_name = lookup(local.snat_with_instance_ids[count.index], "name", format("tf-with-instance-id%3d", count.index + 1))
-  source_cidr     = lookup(local.snat_with_instance_ids[count.index], "source_cidr", )
-  snat_ip         = lookup(local.snat_with_instance_ids[count.index], "snat_ip", )
+  source_cidr     = local.snat_with_instance_ids[count.index]["source_cidr"]
+  snat_ip         = local.snat_with_instance_ids[count.index]["snat_ip"]
 }
