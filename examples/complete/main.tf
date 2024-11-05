@@ -6,29 +6,34 @@ data "alicloud_images" "default" {
 }
 
 data "alicloud_instance_types" "default" {
-  availability_zone = data.alicloud_zones.default.zones.0.id
+  availability_zone = data.alicloud_zones.default.zones[0].id
 }
 
 module "vpc" {
-  source             = "alibaba/vpc/alicloud"
+  source  = "alibaba/vpc/alicloud"
+  version = "~>1.11.0"
+
   create             = true
   vpc_cidr           = "172.16.0.0/12"
   vswitch_cidrs      = [cidrsubnet("172.16.0.0/12", 8, 8), cidrsubnet("172.16.0.0/12", 8, 10), cidrsubnet("172.16.0.0/12", 8, 12), cidrsubnet("172.16.0.0/12", 8, 16), cidrsubnet("172.16.0.0/12", 8, 18)]
-  availability_zones = [data.alicloud_zones.default.zones.0.id]
+  availability_zones = [data.alicloud_zones.default.zones[0].id]
 }
 
 module "security_group" {
-  source = "alibaba/security-group/alicloud"
+  source  = "alibaba/security-group/alicloud"
+  version = "~>2.4.0"
+
   vpc_id = module.vpc.this_vpc_id
 }
 
 module "ecs_instance" {
-  source = "alibaba/ecs-instance/alicloud"
+  source  = "alibaba/ecs-instance/alicloud"
+  version = "~>2.12.0"
 
   number_of_instances = 5
 
-  instance_type               = data.alicloud_instance_types.default.instance_types.0.id
-  image_id                    = data.alicloud_images.default.images.0.id
+  instance_type               = data.alicloud_instance_types.default.instance_types[0].id
+  image_id                    = data.alicloud_images.default.images[0].id
   vswitch_ids                 = module.vpc.this_vswitch_ids
   security_group_ids          = [module.security_group.this_security_group_id]
   associate_public_ip_address = false
@@ -47,9 +52,9 @@ resource "alicloud_nat_gateway" "this" {
 }
 
 module "eip" {
-  source = "terraform-alicloud-modules/eip/alicloud"
+  source  = "terraform-alicloud-modules/eip/alicloud"
+  version = "~>2.1.0"
 
-  create               = true
   number_of_eips       = 5
   bandwidth            = var.eip_bandwidth
   internet_charge_type = "PayByTraffic"
@@ -74,13 +79,12 @@ module "complete" {
 
   nat_gateway_id = alicloud_nat_gateway.this.id
   snat_table_id  = alicloud_nat_gateway.this.snat_table_ids
-  snat_ips       = module.eip.this_eip_address
 
   # Open to CIDRs blocks
   snat_with_source_cidrs = [
     {
       name         = var.name
-      source_cidrs = [format("%s/32", module.ecs_instance.this_private_ip.0)]
+      source_cidrs = [format("%s/32", module.ecs_instance.this_private_ip[0])]
       snat_ip      = module.eip.this_eip_address[0]
     }
   ]
