@@ -1,4 +1,8 @@
 ## 2.3.0 (Unreleased)
+## 2.2.1 (March 25, 2025)
+
+- examples/complete: improve the examples [GH-9](https://github.com/alibabacloud-automation/terraform-alicloud-snat/pull/9)
+
 ## 2.2.0 (November 05, 2024)
 
 - Module: remove unused attributes; examples: improve the examples [GH-8](https://github.com/alibabacloud-automation/terraform-alicloud-snat/pull/8)
