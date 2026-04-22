@@ -1,3 +1,10 @@
+## [3.0.1](https://github.com/alibabacloud-automation/terraform-alicloud-snat/compare/v3.0.0...v3.0.1) (2026-04-22)
+
+
+### Bug Fixes
+
+* update version of the dependency module ([ea7d8b8](https://github.com/alibabacloud-automation/terraform-alicloud-snat/commit/ea7d8b88dfced62047864915fb6e1a8d901caabc))
+
 ## [3.0.0](https://github.com/alibabacloud-automation/terraform-alicloud-snat/compare/v2.2.1...v3.0.0) (2026-04-22)
 
 
